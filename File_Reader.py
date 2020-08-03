@@ -6,6 +6,8 @@ import os
 
 # supported file structure:
 """
+    %setup
+    default
     %version
     v1.0.0
     %login              <--- key
@@ -17,37 +19,125 @@ import os
     %e-mail password
     test_password
 """
-clear_file = ["%version","v1.0.0","%login","admin",
-                "%user_password","admin1234","%e-mail","","%email password",""]
+# final variables
+HEADER = "File_Reader"
+clear_file = ["%setup","default","%version","v1.0.0","%login","admin",
+                "%user_password","admin1234","%e-mail","","%e-mail password",""]
 # object for mantaining file
 class File_Reader:
 
-    def __init__(self,src):
-
+    def __init__(self,src,debug):
+        self.version = "v.1.0.0"
+        self.debug = debug
+        self.log_print(self.version + " inicialization...")
+        self.log_print("clear_file check: "+str(self.counter("%",clear_file)))
         self.file_path = src                # path in string pointing on file
-        
-        self.keys = []                      # collection storing keys 
-        self.values = []                    # collection storing values
-        
-        self.file_obj = open(src,"r")       # file object
+        self.log_print("Given src path: "+self.file_path)
+        self.keys = []                      # collection stores keys 
+        self.values = []                    # collection stores values
 
         self.new = False                    # variable True if file was new
+        self.integrity = False              # flag for checking integirity file
+        self.fatal_error = False
+        self.data_lines = []                # collection stores all data from file
 
-        if self.existion_check() == 1:
-            self.new = True
+        # starting procedure of file
+        self.file_obj = self.file_procedure()
 
-    # function for writting data to files:
-    
-    def write_file(self,mode):
+        # now we have lines in /data_lines/ 
+        self.categorize()                   # categorizing lines from file
+        self.log_print("integrity: "+str(self.integrity))
+        self.data_print()                   # printing categorized data if debug = 1
+
+        # if file is good for this version of the program
+        if self.integrity:
+            pass
+        else:
+            print(HEADER + "File is not supported by this version of the program")
+            self.fatal_error = True
 
 
-    def make_file(self):
-        if self.new:
-            file_obj
+    # function for counting signs in collections
+    def counter(self,sign,collection):
+        count = 0
+        for obj in collection:
+            if sign in obj:
+                count+= 1
 
+        return count
 
+    # function for categorizing data output
+    def categorize(self):
+        amount = 0
+        for line in self.data_lines:
+            if (line[0] == "%"):
+                self.keys.append(line[0:len(line)-1])
+                amount+= 1
+            else:
+                self.values.append(line[0:len(line)-1])  
 
+        if amount == self.counter("%",clear_file):
+            self.integrity = True
+        else:
+            self.integrity = False
+
+    # function for checking file and adding and opening default data
+    def file_procedure(self):
+
+        if ( self.existion_check() ):
+            # file exists
+            file_obj = open(self.file_path,"r")
+            self.load_file(file_obj)
+            return file_obj
+        else:
+            # file not exists
+            file_obj = open(self.file_path,"w")
+            self.write_to_file(1,"",file_obj)
+            file_obj.close()
+            file_obj = open(self.file_path,"r")
+            self.load_file(file_obj)
+            return file_obj
+
+    # function for loading lines from file object
+    def load_file(self,file_object):
+        self.log_print("Loading file...")
+        for line in file_object.readlines():
+            self.data_lines.append(line)
+        self.log_print("Loaded "+str(len(self.data_lines))+ " lines.")
+
+    # function for writting data to given file object:
+    # modes:
+    #       1 - write new clear file with default data
+    #       2 - write data to file given in the 'data' variable
+    def write_to_file(self,mode,data,file_object):
+        self.log_print("Writing data to file...")
+        if mode == 1:
+            for line in clear_file:
+                self.log_print("    "+line)
+                file_object.write(line+"\n")
+        elif mode == 2:
+            file_object.write(data+"\n")
+        self.log_print("Data loaded to file.")
+        file_object = open(self.file_path,"r")
+        self.load_file(file_object)
+
+    # fuction for loging information on screen
+    def log_print(self,data_to_print):
+        if self.debug == 1:
+            print(HEADER + " " + data_to_print)
+
+    # function for printing data from collections
+    def data_print(self):
+        if self.debug == 1:
+            print("Data:")
+            for key in self.keys:
+                print("         "+key +" ("+self.values[self.keys.index(key)]+")")
+
+    # function for checking if file exists
     def existion_check(self):
+        self.log_print("Checking if file exists...("+self.file_path+")")
         if (os.path.exists(self.file_path)):
+            self.log_print("File exists!")
             return 1
+        self.log_print("File not exists.")
         return 0

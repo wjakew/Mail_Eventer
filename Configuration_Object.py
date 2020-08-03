@@ -5,5 +5,7 @@
 class Configuration_Object:
 
 
-    def __init__(self):
+    def __init__(self,file_lines):
+
+        self.lines = file_lines
 
