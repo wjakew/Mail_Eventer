@@ -1,9 +1,10 @@
 # by Jakub Wawak 07.2020
 # all rights reserved
 # kubawawak@gmail.com
-import Mail_Getter as mg
+import Response_Action as ra
 import File_Reader as fr
 import sys
+import time
 # data
 version = "v.1.0.0B1"
 HEADER = "Main_Eventer"
@@ -13,7 +14,7 @@ CONFIGURATION_FILE = "configuration_me.txt"
 general idea of the main file:
 eq execution:
 
-python3 main.py composer_file.txt configuration_file.txt
+python3 main.py configuration_file.txt /debuginfo/
 
 
 """
@@ -44,6 +45,16 @@ class Main:
             if self.ask_double("You sure to use that data?"):
                 print("Using the data...")
                 # now we have data and sure to start procedure
+
+                while(True):
+                    print("Starting : "+ time.asctime())
+                    responder = ra.Response_Action(self.configuration_file,self.debug)
+                    responder.run()
+                    print("Stopped : "+ time.asctime())
+                    print("Going to sleep for 120 s")
+                    time.sleep(120)
+                    
+                
             else:
                 print("Cancelled")
 

@@ -3,7 +3,7 @@
 # kubawawak@gmail.com
 import time
 import Composer as comp
-version = "v.1.1.0"
+version = "v.1.1.1"
 class Mail_Object:
 
     # constructor
@@ -29,5 +29,9 @@ class Mail_Object:
         print("From: "+self.from_id)
         print("     Subject: "+self.subject)
         print(self.content)
+
+    # returns if email has data to response
+    def check_compose_status(self):
+        return self.compose_object.get_categorization_status()
 
 

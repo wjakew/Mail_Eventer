@@ -11,7 +11,7 @@ import os
 
 HEADER = "Mail_Getter"
 version = "v.1.0.2"
-MAIL_AMOUNT = 1
+MAIL_AMOUNT = 4
 # object for storing and importing emails
 class Mail_Getter:
 
@@ -32,6 +32,7 @@ class Mail_Getter:
 
         # collection for storing emails data
         self.mail_object_list = []
+        
         # create an IMAP4 class with SSL 
         self.imap = imaplib.IMAP4_SSL("imap.gmail.com")
         # authenticate
