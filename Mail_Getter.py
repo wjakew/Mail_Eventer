@@ -10,6 +10,7 @@ import webbrowser
 import os
 
 HEADER = "Mail_Getter"
+version = "v.1.0.2"
 MAIL_AMOUNT = 1
 # object for storing and importing emails
 class Mail_Getter:
@@ -17,7 +18,6 @@ class Mail_Getter:
     # constructor
     def __init__(self, email_address,user_password,debug_info):
         # version of the module
-        self.version = "v.1.0.2"
         self.date = time.asctime()
         # account credentials
         self.username = email_address
@@ -27,7 +27,7 @@ class Mail_Getter:
 
         # starting printing debug if nessecary
         self.log("Started at:"+self.date)
-        self.log(self.version)
+        self.log(version)
         self.log("Debug is on")
 
         # collection for storing emails data

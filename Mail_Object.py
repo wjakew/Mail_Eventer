@@ -3,14 +3,13 @@
 # kubawawak@gmail.com
 import time
 import Composer as comp
-
+version = "v.1.1.0"
 class Mail_Object:
 
     # constructor
     def __init__(self,email_from,email_subject,email_content):
 
         # version of the object
-        self.version = "v.1.1.0"
 
         # data from email
         self.subject = email_content

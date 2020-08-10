@@ -21,15 +21,15 @@ import os
 """
 # final variables
 HEADER = "File_Reader"
+version = "v0.0.1"
 clear_file = ["%setup","default","%version","v1.0.0","%login","admin",
                 "%user_password","admin1234","%e-mail","","%e-mail password",""]
 # object for mantaining file
 class File_Reader:
 
     def __init__(self,src,debug):
-        self.version = "v.1.0.0"
         self.debug = debug
-        self.log_print(self.version + " inicialization...")
+        self.log_print(version + " inicialization...")
         self.log_print("clear_file check: "+str(self.counter("%",clear_file)))
         self.file_path = src                # path in string pointing on file
         self.log_print("Given src path: "+self.file_path)
@@ -46,15 +46,35 @@ class File_Reader:
 
         # now we have lines in /data_lines/ 
         self.categorize()                   # categorizing lines from file
+        self.dictionary = self.make_dictionary()
         self.log_print("integrity: "+str(self.integrity))
         self.data_print()                   # printing categorized data if debug = 1
-
         # if file is good for this version of the program
         if self.integrity:
             pass
         else:
             print(HEADER + "File is not supported by this version of the program")
             self.fatal_error = True
+
+    # fucntion for checking if we have default setup
+    def check_default_setup(self):
+        if self.dictionary["%setup"] == "default":
+            return True
+        return False
+
+    # function for returning data from dictionary
+    def get_credentials(self):
+        return [self.dictionary["%e-mail"],self.dictionary["%e-mail password"]]
+
+    # function for preparing dictionary
+    def make_dictionary(self):
+        
+        dictionary_toRet = {}
+
+        for key in self.keys:
+            dictionary_toRet[key] = self.values[self.keys.index(key)]
+
+        return dictionary_toRet
 
 
     # function for counting signs in collections
@@ -132,6 +152,8 @@ class File_Reader:
             print("Data:")
             for key in self.keys:
                 print("         "+key +" ("+self.values[self.keys.index(key)]+")")
+            print("Dictionary:")
+            print(str(self.dictionary))
 
     # function for checking if file exists
     def existion_check(self):
