@@ -12,7 +12,7 @@ class Mail_Object:
         # version of the object
 
         # data from email
-        self.subject = email_content
+        self.subject = email_subject
         self.content = email_content
         self.from_id = email_from
 

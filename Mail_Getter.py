@@ -4,6 +4,7 @@
 import Mail_Object as mo
 import time
 import imaplib
+import smtplib
 import email
 from email.header import decode_header
 import webbrowser
@@ -35,10 +36,13 @@ class Mail_Getter:
         
         # create an IMAP4 class with SSL 
         self.imap = imaplib.IMAP4_SSL("imap.gmail.com")
+        #self.imap = smtplib.SMTP("smtp.gmail.com")
+        #self.imap.ehlo()
         # authenticate
         self.imap.login(self.username, self.password)
 
         self.status, self.messages = self.imap.select("INBOX")
+        #self.status, self.messages = self.imap.select('"[Gmail]/All Mail"')
         # number of top emails to fetch
         self.N = MAIL_AMOUNT 
         # total number of emails

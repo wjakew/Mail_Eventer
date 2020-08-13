@@ -1,8 +1,9 @@
 import Mail_Sender as ms
 import Mail_Getter as mg
+import Mail_Getter2 as mgii
 import Response_Object as ro
 
-version = "v0.0.1"
+version = "v1.0.0"
 # class for responsing on emails
 class Response_Action:
 
@@ -17,7 +18,7 @@ class Response_Action:
 
             # mails to response
             credentials = self.configuration.get_credentials()
-            self.mails = mg.Mail_Getter(credentials[0],
+            self.mails = mgii.Mail_Getter2(credentials[0],
                                     credentials[1],self.debug)
             
             self.mails.run()            # loading e-mails
@@ -32,8 +33,10 @@ class Response_Action:
             print("Reading e-mail: "+str(mail.mail_id))
             responder  = ro.Response_Object(mail,self.configuration)   # single mail responder
 
-            responder.response()
-            print("Responded")
+            if responder.response():
+                print("Responded")
+            else:
+                print("E-mail passed")
 
 
 

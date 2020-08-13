@@ -6,7 +6,7 @@ import File_Reader as fr
 import sys
 import time
 # data
-version = "v.1.0.0B1"
+version = "v.1.0.0B2"
 HEADER = "Main_Eventer"
 CONFIGURATION_FILE = "configuration_me.txt"
 # main part of the program
@@ -53,8 +53,7 @@ class Main:
                     print("Stopped : "+ time.asctime())
                     print("Going to sleep for 120 s")
                     time.sleep(120)
-                    
-                
+ 
             else:
                 print("Cancelled")
 

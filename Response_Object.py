@@ -1,6 +1,6 @@
 import Mail_Sender as ms
 
-
+version ="v1.0.0"
 # single object for responsing for one emai
 class Response_Object:
 
@@ -22,9 +22,9 @@ class Response_Object:
             mail_to_send = ms.Mail_Sender(credentials[0],credentials[1])
 
             mail_to_send.send(self.mail_to_response.from_id,subject,self.response_wrapper(content_response))
-
+            return True
         else:
-            pass
+            return False
 
     # function for wrapping responses
     def response_wrapper(self,data_to_wrap):
