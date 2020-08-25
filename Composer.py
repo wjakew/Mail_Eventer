@@ -48,6 +48,7 @@ class Composer:
         self.content = data_to_recompose        # field for storing raw content
 
         self.lines = self.prepare_data()        # all of lines from object
+        self.words = self.get_words()
 
         self.key_dictionary = {}                # collection for keys and values found in mail
 
@@ -108,6 +109,17 @@ class Composer:
 
         return lines_to_ret
 
+    # function for getting words from lines of message
+    def get_words(self):
+
+        words_to_ret = []
+
+        for line in self.lines:
+            for word in line.split(" "):
+                words_to_ret.append(word)
+
+        return words_to_ret
+
     def categorize(self):
         # looping on lines
         for line in self.lines:
@@ -116,9 +128,8 @@ class Composer:
                 # checking if word is key
                 if word in KEY_WORDS:
                     # adding word as a key
-                    if line.split(" ").index(word)+1 in range(0, len(line.split(" "))-1):
-                        self.key_dictionary[word] = line.split(
-                            " ")[(line.split(" ").index(word)+1)]
+                    if line.split(" ").index(word)+1 in range(0, len(line.split(" "))):
+                        self.key_dictionary[word] = line.split(" ")[(line.split(" ").index(word)+1)]
                     else:
                         self.key_dictionary[word] = ""
 
