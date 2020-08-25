@@ -6,12 +6,13 @@ import time
 import imaplib
 import smtplib
 import email
+import Mail_Object as mo
 from email.header import decode_header
 import webbrowser
 import os
 
 HEADER = "Mail_Getter"
-version = "v.1.0.2"
+version = "v.1.1.0"
 MAIL_AMOUNT = 4
 # object for storing and importing emails
 class Mail_Getter:
@@ -41,7 +42,7 @@ class Mail_Getter:
         # authenticate
         self.imap.login(self.username, self.password)
 
-        self.status, self.messages = self.imap.select("INBOX")
+        self.status, self.messages = self.imap.select('"INBOX"')
         #self.status, self.messages = self.imap.select('"[Gmail]/All Mail"')
         # number of top emails to fetch
         self.N = MAIL_AMOUNT 
@@ -56,7 +57,7 @@ class Mail_Getter:
     # main function for getting feedback
     def run(self):
         self.log("Starting procedure")
-        self.get_mails()
+        self.fetch()
         self.end()
 
     # function for getting emails
@@ -64,7 +65,8 @@ class Mail_Getter:
         self.log("Number of fetched e-mails: "+str(self.N)+"/"+ str(self.messages))
         for i in range(self.messages, self.messages-self.N, -1):
             # fetch the email message by ID
-            res, msg = self.imap.fetch(str(i), "(RFC822)")
+            #res, msg = self.imap.fetch(str(i), "(RFC822)")
+            res, msg = self.imap.uid('fetch', i, '(RFC822)')
             for response in msg:
                 if isinstance(response, tuple):
                     # parse a bytes email into a message object
@@ -100,6 +102,26 @@ class Mail_Getter:
                             # print only text email parts
                             self.mail_object_list.append(mo.Mail_Object(from_,subject,body))
                             self.log("Found mail : "+from_ + " :"+str(self.mail_object_list[-1].mail_id))
+
+    # function for getting mails
+    def fetch(self):
+        result, data = self.imap.uid('search', None, "ALL") # search all email and return uids
+        if result == 'OK':
+            for num in data[0].split():
+                result, data = self.imap.uid('fetch', num, '(RFC822)')
+                if result == 'OK':
+                    email_message = email.message_from_bytes(data[0][1])    # raw email text including headers
+                    #print('From:' + email_message['From'])
+                    #print('Subject: ' + email_message['Subject'])
+                    for part in email_message.walk():
+                        # each part is a either non-multipart, or another multipart message
+                        # that contains further parts... Message is organized like a tree
+                        if part.get_content_type() == 'text/plain':
+                            #print (part.get_payload()) # prints the raw text
+                            pass
+
+                    self.mail_object_list.append(mo.Mail_Object(email_message['From'],email_message['Subject'],part.get_payload()))
+
     # function for printing log on screen
     def log(self,data):
         if self.debug == 1:

@@ -1,3 +1,6 @@
+# by Jakub Wawak 08.2020
+# all rights reserved
+# kubawawak@gmail.com
 import imaplib
 import time
 import Parser as p

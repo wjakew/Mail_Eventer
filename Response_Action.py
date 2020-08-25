@@ -18,7 +18,7 @@ class Response_Action:
 
             # mails to response
             credentials = self.configuration.get_credentials()
-            self.mails = mgii.Mail_Getter2(credentials[0],
+            self.mails = mg.Mail_Getter(credentials[0],
                                     credentials[1],self.debug)
             
             self.mails.run()            # loading e-mails

@@ -3,6 +3,7 @@
 # kubawawak@gmail.com
 import time
 import urllib.request
+import Commander as c
 """
 notes about object:
 
@@ -64,6 +65,16 @@ class Composer:
 
             elif key == "%getip":
                 return self.compose_response_getip()
+            
+            elif key == "%getstatus":
+                return self.compose_response_os("%getstatus",self.key_dictionary[key])
+            
+            elif key == "%getnotify":
+                return self.compose_response_os("%getnotify",self.key_dictionary[key])
+            
+            elif key == "%executecommand":
+                return self.compose_response_os("%executecommand",self.key_dictionary[key])
+
 
 
 #-------------------------------------_COMPOSE RESPONSE FUNCTIONS
@@ -73,6 +84,9 @@ class Composer:
 
     def compose_response_getip(self):
         return urllib.request.urlopen('https://ident.me').read().decode('utf8')
+
+    def compose_response_os(self,data,raw_input):
+        return c.Commander(data,raw_input).wrapper()
 #-----------------------------------------------------------------
     # checking if we found something
     def get_categorization_status(self):

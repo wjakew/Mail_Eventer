@@ -6,7 +6,7 @@ import File_Reader as fr
 import sys
 import time
 # data
-version = "v.1.0.0B2"
+version = "v.1.0.0B4"
 HEADER = "Main_Eventer"
 CONFIGURATION_FILE = "configuration_me.txt"
 # main part of the program
@@ -15,8 +15,6 @@ general idea of the main file:
 eq execution:
 
 python3 main.py configuration_file.txt /debuginfo/
-
-
 """
 class Main:
 

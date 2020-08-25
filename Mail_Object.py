@@ -3,7 +3,7 @@
 # kubawawak@gmail.com
 import time
 import Composer as comp
-version = "v.1.1.1"
+version = "v.1.1.2"
 class Mail_Object:
 
     # constructor
@@ -15,6 +15,9 @@ class Mail_Object:
         self.subject = email_subject
         self.content = email_content
         self.from_id = email_from
+        if "<" in self.from_id:
+            self.from_id = self.from_id.split("<")[1][0:len(self.from_id.split("<")[1])-1]
+
 
         # data of the object
 
@@ -27,7 +30,7 @@ class Mail_Object:
         print(str(self.mail_id))
         print("-----Email-----")
         print("From: "+self.from_id)
-        print("     Subject: "+self.subject)
+        print("Subject: "+self.subject)
         print(self.content)
 
     # returns if email has data to response

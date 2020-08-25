@@ -1,3 +1,6 @@
+# by Jakub Wawak 08.2020
+# all rights reserved
+# kubawawak@gmail.com   
 import Mail_Object as mo
 
 version = "v1.0.0"
@@ -147,6 +150,7 @@ class Parser:
         print("------------------------------------------------")
         print("Parser raw data count : " + str(self.size))
         print("Parser raw data:")
+        print(self.raw_data)
         print("---------------------------------")
         print("Raw head data:")
         #self.show_list(self.mail_header)
