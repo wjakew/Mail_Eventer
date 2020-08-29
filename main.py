@@ -6,7 +6,7 @@ import File_Reader as fr
 import sys
 import time
 # data
-version = "v.1.0.0GM"
+version = "v.1.0.0"
 HEADER = "Main_Eventer"
 CONFIGURATION_FILE = "configuration_me.txt"
 # main part of the program

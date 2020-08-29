@@ -12,6 +12,7 @@ class Response_Action:
         self.debug = debug                              # debug info
         self.configuration = confugiration_file         # object for storing data 
         self.fatal_error = False                        # fatal error true if configuration mail broken
+        self.looped_mail_list = []
 
         # checking if configuration is good to go
         if self.configuration.fatal_error != True:
@@ -30,13 +31,17 @@ class Response_Action:
     def run(self):
         print("Running new Responce_Action Instance...")
         for mail in self.mails.mail_object_list:
-            print("Reading e-mail: "+str(mail.mail_id))
-            responder  = ro.Response_Object(mail,self.configuration)   # single mail responder
-
-            if responder.response():
-                print("Responded")
+            if mail.mail_id in self.looped_mail_list:
+                print("E-mail already done")
             else:
-                print("E-mail passed")
+                print("Reading e-mail: "+str(mail.mail_id))
+                responder  = ro.Response_Object(mail,self.configuration)   # single mail responder
+
+                if responder.response():
+                    print("Responded")
+                    self.looped_mail_list.append(mail.mail_id)
+                else:
+                    print("E-mail passed")
 
 
 
